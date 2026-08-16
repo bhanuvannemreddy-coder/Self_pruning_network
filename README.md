@@ -1,34 +1,58 @@
 # The Self-Pruning Neural Network
 
-A PyTorch implementation of a self-pruning feed-forward neural network for CIFAR-10 image classification, developed as part of the Tredence Analytics AI Engineering Internship case study.
+## Tredence Analytics - AI Engineering Internship Case Study
 
-## Project Overview
+A PyTorch implementation of a self-pruning feed-forward neural network for CIFAR-10 image classification.
+
+## 1. Project Overview
 
 The goal of this project is to build a neural network that learns which of its own connections are unnecessary during training.
 
-Each weight in the network has a corresponding learnable gate score. The gate is obtained using a sigmoid function:
+Each network weight has a corresponding learnable gate score.
 
+The gate is calculated as:
+
+```text
 G = sigmoid(gate_scores)
+```
 
 The effective weight is:
 
-W_effective = W \* G
+```text
+W_effective = W * G
+```
 
-A sparsity regularization term encourages unnecessary gates to become small.
+where `*` represents element-wise multiplication.
+
+The network learns both its weights and gate scores during training.
 
 The total training loss is:
 
-Total Loss = Classification Loss + lambda \* Sparsity Loss
+```text
+Total Loss = Classification Loss + lambda * Sparsity Loss
+```
 
 where:
 
+```text
 Sparsity Loss = sum of all gate values
+```
 
-Connections whose gate value falls below 1e-2 are considered pruned during final evaluation.
+Connections whose gate value falls below `1e-2` are considered pruned during final evaluation.
 
-## Architecture
+## 2. Network Architecture
 
-The CIFAR-10 images have dimensions 3 x 32 x 32, giving 3072 input features after flattening.
+CIFAR-10 images have dimensions:
+
+```text
+3 x 32 x 32
+```
+
+After flattening:
+
+```text
+3 x 32 x 32 = 3072 features
+```
 
 The network architecture is:
 
@@ -61,7 +85,7 @@ PrunableLinear
 
 All fully connected layers use the custom `PrunableLinear` implementation.
 
-## Key Features
+## 3. Key Features
 
 - Custom `PrunableLinear` layer implemented from scratch
 - Learnable `gate_scores` with the same shape as the weight tensor
@@ -70,12 +94,12 @@ All fully connected layers use the custom `PrunableLinear` implementation.
 - Adam optimization
 - CIFAR-10 training and evaluation
 - Three different lambda experiments
-- Hard pruning using a 1e-2 threshold
+- Hard pruning using a `1e-2` threshold
 - Gradient-flow verification for weights and gate scores
 - Gate distribution visualization
 - Accuracy-vs-sparsity visualization
 
-## Experimental Setup
+## 4. Experimental Setup
 
 | Parameter         |                    Value |
 | ----------------- | -----------------------: |
@@ -88,9 +112,9 @@ All fully connected layers use the custom `PrunableLinear` implementation.
 | Pruning Threshold |                     0.01 |
 | Lambda Values     |         1e-5, 5e-5, 1e-4 |
 
-## Results
+A separate model was trained from the same initialization for each lambda value.
 
-The experiments produced the following results:
+## 5. Results
 
 | Lambda | Test Accuracy (%) | Sparsity Level (%) |
 | -----: | ----------------: | -----------------: |
@@ -98,28 +122,39 @@ The experiments produced the following results:
 |   5e-5 |             54.94 |              28.34 |
 |   1e-4 |         **55.17** |          **46.07** |
 
-The best result was obtained with lambda = 1e-4:
+The best result was obtained with:
 
-- Test Accuracy: **55.17%**
-- Sparsity: **46.07%**
+```text
+Lambda = 1e-4
+Test Accuracy = 55.17%
+Sparsity = 46.07%
+```
 
 The results demonstrate that increasing lambda substantially increases sparsity while maintaining comparable classification accuracy over the tested range.
 
-## Results Visualization
+## 6. Results Visualizations
 
 ### Gate Distribution
 
 The final gate distribution for the best model is available at:
 
-`results/gate_distribution_best.png`
+```text
+results/gate_distribution_best.png
+```
+
+![Gate Distribution](results/gate_distribution_best.png)
 
 ### Accuracy vs Sparsity
 
 The accuracy-sparsity trade-off is available at:
 
-`results/accuracy_vs_sparsity.png`
+```text
+results/accuracy_vs_sparsity.png
+```
 
-## Project Structure
+![Accuracy vs Sparsity](results/accuracy_vs_sparsity.png)
+
+## 7. Project Structure
 
 ```text
 self-pruning-neural-network/
@@ -138,9 +173,9 @@ self-pruning-neural-network/
 
 The CIFAR-10 dataset, virtual environment, and trained model checkpoint are not required in the repository.
 
-## Installation
+## 8. Installation
 
-Clone the repository and enter the project directory:
+Clone the repository:
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/self-pruning-neural-network.git
@@ -165,7 +200,7 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
-## Running the Project
+## 9. Running the Project
 
 Run:
 
@@ -184,17 +219,19 @@ results/accuracy_vs_sparsity.png
 results/best_model.pth
 ```
 
-The trained model checkpoint is intentionally kept out of GitHub because it is a generated binary artifact and is not required to reproduce the code or analysis.
+The trained model checkpoint is intentionally excluded from GitHub because it is a generated binary artifact and is not required to reproduce the implementation.
 
-## Report
+## 10. Report
 
 The detailed case-study report is available in:
 
-`report.md`
+```text
+report.md
+```
 
 It contains the methodology, sparsity formulation, experimental results, lambda analysis, gate statistics, and conclusions.
 
-## Technologies
+## 11. Technologies
 
 - Python
 - PyTorch
@@ -204,7 +241,7 @@ It contains the methodology, sparsity formulation, experimental results, lambda 
 - Matplotlib
 - tqdm
 
-## Case Study Objective
+## 12. Case Study Objective
 
 This implementation demonstrates how learnable gates and sparsity regularization can be combined to allow a neural network to identify and suppress unnecessary connections during training.
 
