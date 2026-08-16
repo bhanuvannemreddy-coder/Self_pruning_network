@@ -1,32 +1,27 @@
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *.pyo
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
 .venv/
 
-# IDE
+# IDE files
 .vscode/
 .idea/
 
-# PyTorch models
+# CIFAR-10 dataset
+data/
+
+# Trained model checkpoints
 *.pth
 *.pt
 
-# Dataset
-data/
-
-# Results generated during experiments
-results/*.csv
-results/*.png
-results/*.pth
+# OS files
+.DS_Store
+Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
-
-# OS
-.DS_Store
-Thumbs.db
